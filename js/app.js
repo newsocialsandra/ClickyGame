@@ -1,4 +1,3 @@
-// Have the game to end automatically when the time is over (60s) so that the rules are clear and fair.
 // See my final score when the game ends so that I know my result.
 // Enter my name so that my result can be connected to me
 // Submit my score so that it can be saved to the shared scoreboard.
@@ -6,7 +5,6 @@
 
 // Variables
 let score = 0;
-
 let time = 60;
 
 // HTML DOM
@@ -27,7 +25,16 @@ function increaseScore() {
   scoreDisplay.innerText = score;
 }
 
-myInterval = setInterval(function () {
-  timeDisplay.innerHTML = time -= 1;
-}, 1000);
+let myInterval = setInterval(function () {
+  time -= 1;
+  timeDisplay.innerText = time;
 
+  if (time <= 0) {
+    clearInterval(myInterval);
+    timeDisplay.innerText = "Time's up!";
+    button1.disabled = true;
+  }
+},1000);
+
+// TODO
+// Start countdown when button is clicked
