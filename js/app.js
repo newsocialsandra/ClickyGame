@@ -7,12 +7,12 @@
 let score = 0;
 let time = 60;
 let gameStarted = false;
+let gameEnded = false;
 
 // HTML DOM
 const button1 = document.getElementById('btn1');
 const scoreDisplay = document.getElementById('scoreDisplay');
 const timeDisplay = document.getElementById('timeDisplay');
-
 
 // UI Functions
 button1.addEventListener('click', () => {
@@ -29,22 +29,22 @@ function increaseScore() {
   scoreDisplay.innerText = score;
 }
 
-
-
 function startGame() {
   gameStarted = true;
   let myInterval = setInterval(function () {
-  time -= 1;
+  time --;
   timeDisplay.innerText = time;
 
   if (time <= 0) {
     clearInterval(myInterval);
     timeDisplay.innerText = "Time's up!";
     button1.disabled = true;
+    endGame()
   }
 },1000);
 }
 
 function endGame() {
-
+  console.log("Game ended");
+  gameEnded = true;
 }
