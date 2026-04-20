@@ -1,7 +1,8 @@
 // See my final score when the game ends so that I know my result.
-// Enter my name so that my result can be connected to me
-// Submit my score so that it can be saved to the shared scoreboard.
-// Get a message that tells me if my score was saved successfully or not so that I understand what happened.
+
+// Nice to have:
+// See a scoreboard or ranking so that I can compare my result with others.
+// See the scoreboard results in a clear order so that I can easily see the best scores.
 
 // Variables
 let finalScore = 0;
@@ -32,7 +33,6 @@ button2.addEventListener('click', () => {
 input1.style.display = 'none';
 label1.style.display = 'none';
 button2.style.display = 'none';
-
 
 // Functions
 function increaseScore() {
@@ -87,6 +87,31 @@ function showMessage(text, type) {
   messageEl.style.color = type === "success" ? "green" : "red";
 }
 
+function getScoreBoardData() {
+const url = 'https://script.google.com/macros/s/AKfycbys5aEPMvNCutyhNYYCcQcCjzsi2UtqNspmKyCH-AicJxJbCJMrAoT0LUaYaXhTWA8n/exec';
+fetch(url)
+  .then(response => {
+    console.log('Response object:', response);
+    return response.json();
+  })
+  .then(data => {
+    console.log('Scoreboard data:', data);
+    data.forEach((player, index) => {
+      console.log(`Row ${index + 1}: Name=${player.name}, Score=${player.score}`);
+    });
+  })
+  .catch(error => {
+    console.error('Fetch error:', error);
+  });
+}
+getScoreBoardData();
 //TODO
-// Start game button text before first click
+// Edit GET function to fetch top 10 scoreboard results and show them to the user
+
+
+
+// Less important todos
+// "Start game" button text before first click
 // Show final score as Final Score: in the end
+// Make it so that you can only press "Submit score" button once
+// Add restart game button to restart game
