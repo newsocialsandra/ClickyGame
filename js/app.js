@@ -4,7 +4,7 @@
 // Get a message that tells me if my score was saved successfully or not so that I understand what happened.
 
 // Variables
-let score = 0;
+let finalScore = 0;
 let time = 5;
 let gameStarted = false;
 let gameEnded = false;
@@ -37,8 +37,8 @@ button2.style.display = 'none';
 
 // Functions
 function increaseScore() {
-  score++;
-  scoreDisplay.innerText = score;
+  finalScore++;
+  scoreDisplay.innerText = finalScore;
 }
 
 function startGame() {
@@ -65,13 +65,14 @@ function endGame() {
   button2.style.display = 'block';
 }
 
-function submitHighScore() {
-  console.log(input1.value);
-  // POST value to API from Ben
+async function submitHighScore() {
+  const response = await fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", {
+  method: "POST",
+  body: JSON.stringify({ name: input1.value, score: finalScore}),
+});
 }
 
 //TODO
 // Start game button text before first click
 // Show final score as Final Score: in the end
-// When game ends - show text field for user name and submit score button
 // After submitted score, show whether the score has been saved or not
