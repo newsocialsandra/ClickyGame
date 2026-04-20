@@ -8,7 +8,6 @@ let finalScore = 0;
 let time = 5;
 let gameStarted = false;
 let gameEnded = false;
-let interval = null;
 
 // HTML DOM
 const button1 = document.getElementById('btn1');
@@ -58,7 +57,6 @@ function startGame() {
 
 function endGame() {
   gameEnded = true;
-  clearInterval(interval);
   button1.style.display = 'none';
   input1.style.display = 'block';
   label1.style.display = 'block';
@@ -66,13 +64,29 @@ function endGame() {
 }
 
 async function submitHighScore() {
-  const response = await fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", {
+  try {
+  const response = await
+    fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", {
   method: "POST",
   body: JSON.stringify({ name: input1.value, score: finalScore}),
 });
+
+  if (!response.ok) {
+  throw new Error('Servern svarade med ett fel');
+  }
+  showMessage("Yay! Score submitted successfully.", "success");
+  }
+  catch (error) {
+    showMessage("Sorry, something went wrong when submitting your score. Try again.", "error");
+    console.error(error);
+  }
+}
+function showMessage(text, type) {
+  const messageEl = document.getElementById("message");
+  messageEl.innerText = text;
+  messageEl.style.color = type === "success" ? "green" : "red";
 }
 
 //TODO
 // Start game button text before first click
 // Show final score as Final Score: in the end
-// After submitted score, show whether the score has been saved or not
