@@ -15,6 +15,9 @@ const timeDisplay = document.getElementById('timeDisplay');
 const highScore = document.getElementById('highScore');
 const nameLabel = document.getElementById('label1');
 const nameInput = document.getElementById('name');
+const scoreText = document.getElementById('scoreText');
+const startGameText = document.getElementById('startGameText');
+const submitScoreHeader = document.getElementById('submitScoreHeader');
 
 // UI Functions
 clickButton.addEventListener('click', () => {
@@ -28,6 +31,7 @@ submitButton.addEventListener('click', () => {
   submitHighScore();
 })
 
+submitScoreHeader.style.display = 'none';
 nameInput.style.display = 'none';
 nameLabel.style.display = 'none';
 submitButton.style.display = 'none';
@@ -45,7 +49,7 @@ function startGame() {
   timeDisplay.innerText = time;
 
   if (time <= 0) {
-    timeDisplay.innerText = "Time's up!";
+    timeDisplay.innerText = 0;
     clickButton.disabled = true;
     endGame()
   }
@@ -59,7 +63,11 @@ function endGame() {
 }
 
 function showEndScreen() {
+startGameText.style.display = 'none';
+scoreText.style.display = 'none';
+scoreDisplay.innerHTML = `<h2>Final Score: ${finalScore}</h2>`;
 clickButton.style.display = 'none';
+submitScoreHeader.style.display = 'block';
 nameInput.style.display = 'block';
 nameLabel.style.display = 'block';
 submitButton.style.display = 'block';
@@ -86,7 +94,7 @@ async function submitHighScore() {
 function showMessage(text, type) {
   const messageEl = document.getElementById("message");
   messageEl.innerText = text;
-  messageEl.style.color = type === "success" ? "green" : "red";
+  messageEl.style.color = type === "success" ? "#3CB371" : "red";
 }
 
 async function getScoreBoardData() {
@@ -103,7 +111,7 @@ async function getScoreBoardData() {
 function renderScoreboard(topTen) {
   topTen.forEach((player, index) => {
     const listItem = document.createElement('li');
-    listItem.textContent = `${player.name} – Score:${player.score}`;
+    listItem.textContent = `${player.name} – ${player.score} points`;
     highScore.appendChild(listItem);
   })
 }
@@ -111,7 +119,5 @@ function renderScoreboard(topTen) {
 getScoreBoardData();
 
 // TODO
-// "Start game" button text before first click
-// Show final score as Final Score: in the end
 // Make it so that you can only press "Submit score" button once
 // Add restart game button to restart game
