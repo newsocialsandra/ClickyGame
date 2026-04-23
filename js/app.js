@@ -1,15 +1,9 @@
-// Nice to have:
-// See a scoreboard or ranking so that I can compare my result with others.
-// See the scoreboard results in a clear order so that I can easily see the best scores.
-
 // Variables
 let finalScore = 0;
 let time = 5;
 let gameStarted = false;
 let gameEnded = false;
 let myInterval = null;
-
-let playerScores = {};
 
 // HTML DOM
 const button1 = document.getElementById('btn1');
@@ -97,22 +91,20 @@ fetch(url)
     return response.json();
   })
   .then(data => {
-    console.log('Scoreboard data:', data);
-    data.forEach((player, index) => {
-      console.log(`Row ${index + 1}: Name=${player.name}, Score=${player.score}`);
-    });
+    const topTen = data
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 10);
+    topTen.forEach((player, index) => {
+      const listItem = document.createElement('li');
+      listItem.textContent = `${player.name} – Score:${player.score}`;
+      highScore.appendChild(listItem)
+    })
   })
   .catch(error => {
     console.error('Fetch error:', error);
   });
 }
 getScoreBoardData();
-//TODO
-// Edit GET function to fetch top 10 scoreboard results and show them to the user
-// Lägg varje player, index som ett key value pair i objektet playerScores?
-// Sortera playerScores efter högst score? Går det?!?!
-// Loopa igenom de 10 första paren i playerScores och lägg resultaten i nytt objekt?
-// Få in nya objektet i HTML på nå vis?
 
 
 // Less important todos
