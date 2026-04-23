@@ -1,5 +1,3 @@
-// See my final score when the game ends so that I know my result.
-
 // Nice to have:
 // See a scoreboard or ranking so that I can compare my result with others.
 // See the scoreboard results in a clear order so that I can easily see the best scores.
@@ -9,12 +7,16 @@ let finalScore = 0;
 let time = 5;
 let gameStarted = false;
 let gameEnded = false;
+let myInterval = null;
+
+let playerScores = {};
 
 // HTML DOM
 const button1 = document.getElementById('btn1');
 const button2 = document.getElementById('btn2');
 const scoreDisplay = document.getElementById('scoreDisplay');
 const timeDisplay = document.getElementById('timeDisplay');
+const highScore = document.getElementById('highScore');
 const label1 = document.getElementById('label1');
 const input1 = document.getElementById('name');
 
@@ -42,12 +44,11 @@ function increaseScore() {
 
 function startGame() {
   gameStarted = true;
-  let myInterval = setInterval(function () {
+  myInterval = setInterval(function () {
   time --;
   timeDisplay.innerText = time;
 
   if (time <= 0) {
-    clearInterval(myInterval);
     timeDisplay.innerText = "Time's up!";
     button1.disabled = true;
     endGame()
@@ -61,6 +62,7 @@ function endGame() {
   input1.style.display = 'block';
   label1.style.display = 'block';
   button2.style.display = 'block';
+  clearInterval(myInterval);
 }
 
 async function submitHighScore() {
@@ -107,7 +109,10 @@ fetch(url)
 getScoreBoardData();
 //TODO
 // Edit GET function to fetch top 10 scoreboard results and show them to the user
-
+// Lägg varje player, index som ett key value pair i objektet playerScores?
+// Sortera playerScores efter högst score? Går det?!?!
+// Loopa igenom de 10 första paren i playerScores och lägg resultaten i nytt objekt?
+// Få in nya objektet i HTML på nå vis?
 
 
 // Less important todos

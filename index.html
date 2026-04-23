@@ -26,7 +26,9 @@
 
   <!-- Add your site or application content here -->
   <h1>Welcome to my game </h1>
+  <p>Seconds left:</p>
   <p id ="timeDisplay">60</p>
+  <p>Start game:</p>
   <button id="btn1">Click Me</button>
   <p id="scoreDisplay">0</p>
 
@@ -38,10 +40,17 @@
     name="name"
     required
     minlength="3"
-    maxlength="8"
+    maxlength="16"
     size="16" />
+
   <button id="btn2">Submit High Score</button>
+
   <p id="message"></p>
+
+  <h2>Top 10 Global Leaderboard</h2>
+  <ol id="highScore"></ol>
+
+
   <script src="js/app.js"></script>
 
 </body>
