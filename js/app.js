@@ -1,6 +1,6 @@
 // Variables
 let finalScore = 0;
-let time = 5;
+let time = 60;
 let gameStarted = false;
 let gameEnded = false;
 let myInterval = null;
@@ -35,6 +35,8 @@ submitScoreHeader.style.display = 'none';
 nameInput.style.display = 'none';
 nameLabel.style.display = 'none';
 submitButton.style.display = 'none';
+
+getScoreBoardData();
 
 // Functions
 function increaseScore() {
@@ -115,8 +117,6 @@ function renderScoreboard(topTen) {
     highScore.appendChild(listItem);
   })
 }
-
-getScoreBoardData();
 
 // TODO
 // Make it so that you can only press "Submit score" button once
