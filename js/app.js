@@ -87,6 +87,9 @@ async function submitHighScore() {
   throw new Error('Servern svarade med ett fel');
   }
   showMessage("Yay! Score submitted successfully.", "success");
+  setTimeout(() => {
+    getScoreBoardData();
+  }, 2000);
   }
   catch (error) {
     showMessage("Sorry, something went wrong when submitting your score. Try again.", "error");
@@ -111,6 +114,7 @@ async function getScoreBoardData() {
 }
 
 function renderScoreboard(topTen) {
+  highScore.innerHTML = '';
   topTen.forEach((player, index) => {
     const listItem = document.createElement('li');
     listItem.textContent = `${player.name} – ${player.score} points`;
