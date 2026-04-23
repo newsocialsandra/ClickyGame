@@ -4,31 +4,33 @@ let time = 5;
 let gameStarted = false;
 let gameEnded = false;
 let myInterval = null;
+const urlScoreBoard = 'https://script.google.com/macros/s/AKfycbys5aEPMvNCutyhNYYCcQcCjzsi2UtqNspmKyCH-AicJxJbCJMrAoT0LUaYaXhTWA8n/exec';
+
 
 // HTML DOM
-const button1 = document.getElementById('btn1');
-const button2 = document.getElementById('btn2');
+const clickButton = document.getElementById('btn1');
+const submitButton = document.getElementById('btn2');
 const scoreDisplay = document.getElementById('scoreDisplay');
 const timeDisplay = document.getElementById('timeDisplay');
 const highScore = document.getElementById('highScore');
-const label1 = document.getElementById('label1');
-const input1 = document.getElementById('name');
+const nameLabel = document.getElementById('label1');
+const nameInput = document.getElementById('name');
 
 // UI Functions
-button1.addEventListener('click', () => {
+clickButton.addEventListener('click', () => {
   increaseScore();
   if (!gameStarted) {
     startGame()
   }
 })
 
-button2.addEventListener('click', () => {
+submitButton.addEventListener('click', () => {
   submitHighScore();
 })
 
-input1.style.display = 'none';
-label1.style.display = 'none';
-button2.style.display = 'none';
+nameInput.style.display = 'none';
+nameLabel.style.display = 'none';
+submitButton.style.display = 'none';
 
 // Functions
 function increaseScore() {
@@ -44,7 +46,7 @@ function startGame() {
 
   if (time <= 0) {
     timeDisplay.innerText = "Time's up!";
-    button1.disabled = true;
+    clickButton.disabled = true;
     endGame()
   }
 },1000);
@@ -52,11 +54,15 @@ function startGame() {
 
 function endGame() {
   gameEnded = true;
-  button1.style.display = 'none';
-  input1.style.display = 'block';
-  label1.style.display = 'block';
-  button2.style.display = 'block';
   clearInterval(myInterval);
+  showEndScreen();
+}
+
+function showEndScreen() {
+clickButton.style.display = 'none';
+nameInput.style.display = 'block';
+nameLabel.style.display = 'block';
+submitButton.style.display = 'block';
 }
 
 async function submitHighScore() {
@@ -64,7 +70,7 @@ async function submitHighScore() {
   const response = await
     fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", {
   method: "POST",
-  body: JSON.stringify({ name: input1.value, score: finalScore}),
+  body: JSON.stringify({ name: nameInput.value, score: finalScore}),
 });
 
   if (!response.ok) {
@@ -83,31 +89,28 @@ function showMessage(text, type) {
   messageEl.style.color = type === "success" ? "green" : "red";
 }
 
-function getScoreBoardData() {
-const url = 'https://script.google.com/macros/s/AKfycbys5aEPMvNCutyhNYYCcQcCjzsi2UtqNspmKyCH-AicJxJbCJMrAoT0LUaYaXhTWA8n/exec';
-fetch(url)
-  .then(response => {
-    console.log('Response object:', response);
-    return response.json();
-  })
-  .then(data => {
-    const topTen = data
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 10);
-    topTen.forEach((player, index) => {
-      const listItem = document.createElement('li');
-      listItem.textContent = `${player.name} – Score:${player.score}`;
-      highScore.appendChild(listItem)
-    })
-  })
-  .catch(error => {
-    console.error('Fetch error:', error);
-  });
+async function getScoreBoardData() {
+  try {
+    const response = await fetch(urlScoreBoard);
+    const data = await response.json();
+    const topTen = data.sort((a, b) => b.score - a.score).slice(0, 10);
+    renderScoreboard(topTen);
+  } catch (error) {
+    console.error('Fetch Error', error);
+  }
 }
+
+function renderScoreboard(topTen) {
+  topTen.forEach((player, index) => {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${player.name} – Score:${player.score}`;
+    highScore.appendChild(listItem);
+  })
+}
+
 getScoreBoardData();
 
-
-// Less important todos
+// TODO
 // "Start game" button text before first click
 // Show final score as Final Score: in the end
 // Make it so that you can only press "Submit score" button once
